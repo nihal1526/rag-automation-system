@@ -20,6 +20,12 @@ AI-powered RAG automation platform built with n8n, OpenAI, MongoDB, FastAPI, and
 - Qdrant / ChromaDB
 - Docker
 
+## 🖼️ Product Preview
+
+<p align="center">
+  <img src="PDF Reader.png" alt="PDF Reader Workflow" width="900"/>
+</p>
+
 ## ⚙️ Setup
 
 ```bash
