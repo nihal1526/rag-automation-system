@@ -1,0 +1,241 @@
+{
+  "name": "KB Upload",
+  "nodes": [
+    {
+      "parameters": {
+        "mode": "insert",
+        "mongoCollection": {
+          "__rl": true,
+          "value": "Bot_rules",
+          "mode": "list",
+          "cachedResultName": "Bot_rules"
+        },
+        "vectorIndexName": "={{ $('Create Search Index').item.json.indexName }}",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.vectorStoreMongoDBAtlas",
+      "typeVersion": 1.3,
+      "position": [
+        -432,
+        -112
+      ],
+      "id": "48f4de81-bd8a-4269-97c1-47da0bc32354",
+      "name": "MongoDB Atlas Vector Store",
+      "credentials": {
+        "mongoDb": {
+          "id": "cYYdi13bOKTQZeyS",
+          "name": "MongoDB account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.embeddingsOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        -560,
+        96
+      ],
+      "id": "6391b789-f053-4e9b-a303-7e5de81068fa",
+      "name": "Embeddings OpenAI",
+      "credentials": {
+        "openAiApi": {
+          "id": "5QHvtfqGneo5aBLi",
+          "name": "n8n free OpenAI API credits"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "dataType": "binary",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.documentDefaultDataLoader",
+      "typeVersion": 1.1,
+      "position": [
+        -272,
+        96
+      ],
+      "id": "478a9084-5861-4f3a-bfd1-2623cc9416a8",
+      "name": "Default Data Loader"
+    },
+    {
+      "parameters": {
+        "formTitle": "Database Name",
+        "formFields": {
+          "values": [
+            {
+              "fieldLabel": "Database"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.formTrigger",
+      "typeVersion": 2.5,
+      "position": [
+        -1088,
+        -112
+      ],
+      "id": "488cf13d-b6a1-4d3b-badd-e1e92f21e4f1",
+      "name": "On form submission1",
+      "webhookId": "caa283c4-6e18-4adf-8351-541ec4156ffd"
+    },
+    {
+      "parameters": {
+        "resource": "searchIndexes",
+        "collection": "Bot_rules",
+        "indexNameRequired": "={{ $json.Database }}",
+        "indexDefinition": "{\n  \"fields\": [\n    {\n      \"type\": \"vector\",\n      \"path\": \"embedding\",\n      \"numDimensions\": 1536,\n      \"similarity\": \"cosine\"\n    }\n  ]\n}"
+      },
+      "type": "n8n-nodes-base.mongoDb",
+      "typeVersion": 1.2,
+      "position": [
+        -848,
+        -112
+      ],
+      "id": "5b9a4ee2-75ef-4318-8ad8-8887dfbf6a69",
+      "name": "Create Search Index",
+      "credentials": {
+        "mongoDb": {
+          "id": "cYYdi13bOKTQZeyS",
+          "name": "MongoDB account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "formFields": {
+          "values": [
+            {
+              "fieldLabel": "File Upload",
+              "fieldType": "file",
+              "requiredField": true
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.form",
+      "typeVersion": 2.5,
+      "position": [
+        -640,
+        -112
+      ],
+      "id": "fe179601-541d-4a7e-9290-a170e034623b",
+      "name": "Form",
+      "webhookId": "2420a43b-a1a7-470d-b501-dfeba8662341"
+    },
+    {
+      "parameters": {
+        "workflowId": {
+          "__rl": true,
+          "value": "XLlORIe2RZkVtaqb",
+          "mode": "list",
+          "cachedResultUrl": "/workflow/XLlORIe2RZkVtaqb",
+          "cachedResultName": "Test 9/05/2026 testing"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {},
+          "matchingColumns": [],
+          "schema": [],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": true
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1.3,
+      "position": [
+        -80,
+        -112
+      ],
+      "id": "a980c7d4-f178-46d0-b31f-9652cacf7f17",
+      "name": "Call 'Test 9/05/2026 testing'"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Embeddings OpenAI": {
+      "ai_embedding": [
+        [
+          {
+            "node": "MongoDB Atlas Vector Store",
+            "type": "ai_embedding",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Default Data Loader": {
+      "ai_document": [
+        [
+          {
+            "node": "MongoDB Atlas Vector Store",
+            "type": "ai_document",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "On form submission1": {
+      "main": [
+        [
+          {
+            "node": "Create Search Index",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create Search Index": {
+      "main": [
+        [
+          {
+            "node": "Form",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Form": {
+      "main": [
+        [
+          {
+            "node": "MongoDB Atlas Vector Store",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "MongoDB Atlas Vector Store": {
+      "main": [
+        [
+          {
+            "node": "Call 'Test 9/05/2026 testing'",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "d3ea2bba-f9e7-427b-8d35-b640a1b98cb6",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "0422695ef96a820dc3ce85fb56ad677cc45f3c8c0a618090c66da867df97af3e"
+  },
+  "id": "FnLYJygTN0oyo0Vs",
+  "tags": []
+}
