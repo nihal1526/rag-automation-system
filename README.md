@@ -23,7 +23,8 @@ AI-powered RAG automation platform built with n8n, OpenAI, MongoDB, FastAPI, and
 ## 🖼️ Product Preview
 
 <p align="center">
-  <img src="PDF Reader.png" alt="PDF Reader Workflow" width="900"/>
+  <img src="RAG Agent.png" alt="RAG AI Agent" width="900"/>
+  <img src="KB upload.png" alt="File Upload" width="900"/>
 </p>
 
 ## ⚙️ Setup
